@@ -53,8 +53,29 @@ public class DoctorServiceImpl implements DoctorService {
     @Override
     public Doctor findById(Long id) {
         try (Session session = SessionFactoryProvider.sessionFactory.openSession()) {
-            return ApplicationContext.getDOCTOR_REPOSITORY().findById(session, id);
+            return ApplicationContext.getDOCTOR_REPOSITORY().findById(session, id).orElseThrow();
 
+        }
+    }
+
+    @Override
+    public void delete(Doctor doctor) {
+        try (Session session = SessionFactoryProvider.sessionFactory.openSession()) {
+            session.getTransaction().begin();
+            try {
+                ApplicationContext.getDOCTOR_REPOSITORY().delete(session, doctor);
+                session.getTransaction().commit();
+            } catch (Exception e) {
+                session.getTransaction().rollback();
+                throw e;
+            }
+        }
+    }
+
+    @Override
+    public Doctor findByNc(String nationalCode) {
+        try (Session session = SessionFactoryProvider.sessionFactory.openSession()) {
+            return ApplicationContext.getDOCTOR_REPOSITORY().findByNc(session, nationalCode).orElseThrow();
         }
     }
 }

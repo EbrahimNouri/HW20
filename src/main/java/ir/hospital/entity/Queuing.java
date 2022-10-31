@@ -21,10 +21,13 @@ public class Queuing {
 
     private LocalDateType localDateType;
 
+    private QueuingCheck queuingCheck = QueuingCheck.EMPTY;
+
     @ManyToOne
     private Doctor doctor;
 
     @ManyToOne
     private Patient patient;
+
 
 }

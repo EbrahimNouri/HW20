@@ -22,8 +22,6 @@ public class Prescription {
     @ManyToOne
     private Patient patient;
 
-
-
     private String description;
 
     private LocalDate localDate;

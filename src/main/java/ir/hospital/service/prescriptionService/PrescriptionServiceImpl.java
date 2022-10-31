@@ -51,7 +51,21 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     @Override
     public Prescription findById(Long id) {
         try (Session session = SessionFactoryProvider.sessionFactory.openSession()) {
-            return ApplicationContext.getPRESCRIPTION_REPOSITORY().findById(session, id);
+            return ApplicationContext.getPRESCRIPTION_REPOSITORY().findById(session, id).orElseThrow();
+        }
+    }
+
+    @Override
+    public void delete(Prescription prescription) {
+        try (Session session = SessionFactoryProvider.sessionFactory.openSession()) {
+            session.getTransaction().begin();
+            try {
+                ApplicationContext.getPRESCRIPTION_REPOSITORY().delete(session, prescription);
+                session.getTransaction().commit();
+            } catch (Exception e) {
+                session.getTransaction().rollback();
+                throw e;
+            }
         }
     }
 }

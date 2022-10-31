@@ -18,13 +18,15 @@ public class Clinic {
 
     private String name;
 
-    @OneToMany(mappedBy = "clinic")
+    private String address;
+
+    @OneToMany(mappedBy = "clinic", fetch = FetchType.EAGER)
     private Set<Doctor> doctors;
 
     @ManyToMany(mappedBy = "clinics")
     private Set<Patient> patients;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     private Secretary secretary;
 
 }

@@ -6,4 +6,5 @@ public interface BaseService <E>{
      void saveOrUpdate(E e);
      void update(E e);
      E findById(Long id);
+     void delete(E e);
 }

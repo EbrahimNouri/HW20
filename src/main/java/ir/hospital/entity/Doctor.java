@@ -7,10 +7,8 @@ import java.util.Set;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Builder
 public class Doctor extends Person{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,10 +16,31 @@ public class Doctor extends Person{
 
     private String employeeNumber;
     private SpecialtyType  specialtyType;
-    @ManyToOne()
+
+    @ManyToOne
     private Clinic clinic;
 
     @OneToMany(mappedBy = "doctor")
     private Set<Queuing> queuings;
+    @Builder
+    public Doctor(String firstname, String lastname, String nationalCode, String phoneNumber,
+                  String address, Long id, String employeeNumber, SpecialtyType specialtyType,
+                  Clinic clinic, Set<Queuing> queuings) {
 
+        super(firstname, lastname, nationalCode, phoneNumber, address);
+        this.id = id;
+        this.employeeNumber = employeeNumber;
+        this.specialtyType = specialtyType;
+        this.clinic = clinic;
+        this.queuings = queuings;
+
+    }
+
+    public Doctor(Long id, String employeeNumber, SpecialtyType specialtyType, Clinic clinic, Set<Queuing> queuings) {
+        this.id = id;
+        this.employeeNumber = employeeNumber;
+        this.specialtyType = specialtyType;
+        this.clinic = clinic;
+        this.queuings = queuings;
+    }
 }

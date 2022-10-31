@@ -5,6 +5,8 @@ import ir.hospital.utility.ApplicationContext;
 import ir.hospital.utility.SessionFactoryProvider;
 import org.hibernate.Session;
 
+import java.util.List;
+
 public class ClinicServiceImpl implements ClinicService {
     @Override
     public void save(Clinic clinic) {
@@ -51,7 +53,28 @@ public class ClinicServiceImpl implements ClinicService {
     @Override
     public Clinic findById(Long id) {
         try (Session session = SessionFactoryProvider.sessionFactory.openSession()) {
-            return ApplicationContext.getCLINIC_REPOSITORY().findById(session, id);
+            return ApplicationContext.getCLINIC_REPOSITORY().findById(session, id).orElseThrow();
+        }
+    }
+
+    @Override
+    public void delete(Clinic clinic) {
+        try (Session session = SessionFactoryProvider.sessionFactory.openSession()) {
+            session.getTransaction().begin();
+            try {
+                ApplicationContext.getCLINIC_REPOSITORY().delete(session, clinic);
+                session.getTransaction().commit();
+            } catch (Exception e) {
+                session.getTransaction().rollback();
+                throw e;
+            }
+        }
+    }
+
+    @Override
+    public List<Clinic> clinics() {
+        try (Session session = SessionFactoryProvider.sessionFactory.openSession()) {
+            return ApplicationContext.getCLINIC_REPOSITORY().findAllClinics(session).orElseThrow();
         }
     }
 }

@@ -3,6 +3,8 @@ package ir.hospital.repository.prescriptionRepository;
 import ir.hospital.entity.Prescription;
 import org.hibernate.Session;
 
+import java.util.Optional;
+
 public class PrescriptionRepositoryImpl implements PrescriptionRepository{
     @Override
     public void save(Session session, Prescription prescription) {
@@ -10,8 +12,8 @@ public class PrescriptionRepositoryImpl implements PrescriptionRepository{
     }
 
     @Override
-    public Prescription findById(Session session, Long id) {
-        return session.find(Prescription.class, id);
+    public Optional<Prescription> findById(Session session, Long id) {
+        return Optional.ofNullable(session.find(Prescription.class, id));
     }
 
     @Override
