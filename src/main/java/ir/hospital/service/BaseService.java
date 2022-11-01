@@ -7,4 +7,6 @@ public interface BaseService <E>{
      void update(E e);
      E findById(Long id);
      void delete(E e);
+
+     boolean isExist(Long id);
 }

@@ -86,4 +86,11 @@ public class QueuingServiceImpl implements QueuingService {
             }
         }
     }
+
+    @Override
+    public boolean isExist(Long id) {
+        try (Session session = SessionFactoryProvider.sessionFactory.openSession()) {
+            return ApplicationContext.getQUEUING_REPOSITORY().isExist(session, id);
+        }
+    }
 }

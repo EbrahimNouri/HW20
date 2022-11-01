@@ -4,7 +4,6 @@ import ir.hospital.entity.Queuing;
 import ir.hospital.entity.QueuingCheck;
 import org.hibernate.Session;
 
-import java.util.List;
 import java.util.Optional;
 
 public class QueuingRepositoryImpl implements QueuingRepository {
@@ -43,5 +42,10 @@ public class QueuingRepositoryImpl implements QueuingRepository {
                                 && queuingOfList.getLocalDate().getDayOfYear() == queuing.getLocalDate().getDayOfYear()
                                 && queuingOfList.getLocalDateType() == queuing.getLocalDateType()
                                 && queuingOfList.getQueuingCheck() == QueuingCheck.RESERVED).toList().isEmpty();
+    }
+
+    @Override
+    public boolean isExist(Session session, Long id) {
+        return session.find(Queuing.class, id) != null;
     }
 }

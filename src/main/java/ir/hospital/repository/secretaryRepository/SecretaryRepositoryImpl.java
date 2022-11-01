@@ -1,6 +1,5 @@
 package ir.hospital.repository.secretaryRepository;
 
-import ir.hospital.entity.Patient;
 import ir.hospital.entity.Secretary;
 import org.hibernate.Session;
 
@@ -36,5 +35,10 @@ public class SecretaryRepositoryImpl implements SecretaryRepository{
     public Optional<Secretary> findByNc(Session session, String nationalCode) {
         return Optional.ofNullable(session.createQuery("from Secretary p where p.nationalCode = :ncode", Secretary.class)
                 .setParameter("nscode", nationalCode).getSingleResult());
+    }
+
+    @Override
+    public boolean isExist(Session session, Long id) {
+        return session.find(Secretary.class, id) != null;
     }
 }

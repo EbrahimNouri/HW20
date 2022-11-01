@@ -36,4 +36,9 @@ public class PatientRepositoryImpl implements PatientRepository{
         return Optional.ofNullable(session.createQuery("from Patient p where p.nationalCode = :ncode", Patient.class)
                 .setParameter("nscode", nationalCode).getSingleResult());
     }
+
+    @Override
+    public boolean isExist(Session session, Long id) {
+        return session.find(Patient.class, id) != null;
+    }
 }

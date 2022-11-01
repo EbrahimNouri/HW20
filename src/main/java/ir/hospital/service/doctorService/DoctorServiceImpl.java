@@ -78,4 +78,10 @@ public class DoctorServiceImpl implements DoctorService {
             return ApplicationContext.getDOCTOR_REPOSITORY().findByNc(session, nationalCode).orElseThrow();
         }
     }
+@Override
+    public boolean isExist(Long id) {
+        try (Session session = SessionFactoryProvider.sessionFactory.openSession()) {
+            return ApplicationContext.getDOCTOR_REPOSITORY().isExist(session, id);
+        }
+    }
 }

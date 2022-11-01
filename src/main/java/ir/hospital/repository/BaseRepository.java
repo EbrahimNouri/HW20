@@ -21,4 +21,6 @@ public interface BaseRepository<E> {
     default void saveOrUpdate(Session session, E e){
         session.saveOrUpdate(e);
     }
+
+    boolean isExist(Session session,Long id);
 }

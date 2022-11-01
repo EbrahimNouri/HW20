@@ -22,18 +22,17 @@ public class Doctor extends Person{
 
     @OneToMany(mappedBy = "doctor")
     private Set<Queuing> queuings;
+
     @Builder
-    public Doctor(String firstname, String lastname, String nationalCode, String phoneNumber,
+    public Doctor(String firstname, String lastname, String nationalCode, String password, String phoneNumber,
                   String address, Long id, String employeeNumber, SpecialtyType specialtyType,
                   Clinic clinic, Set<Queuing> queuings) {
-
-        super(firstname, lastname, nationalCode, phoneNumber, address);
+        super(firstname, lastname, nationalCode, password, phoneNumber, address);
         this.id = id;
         this.employeeNumber = employeeNumber;
         this.specialtyType = specialtyType;
         this.clinic = clinic;
         this.queuings = queuings;
-
     }
 
     public Doctor(Long id, String employeeNumber, SpecialtyType specialtyType, Clinic clinic, Set<Queuing> queuings) {

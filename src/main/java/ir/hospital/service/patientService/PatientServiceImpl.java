@@ -1,5 +1,6 @@
 package ir.hospital.service.patientService;
 
+import ir.hospital.dto.PatientListDto;
 import ir.hospital.entity.Patient;
 import ir.hospital.utility.ApplicationContext;
 import ir.hospital.utility.SessionFactoryProvider;
@@ -75,4 +76,40 @@ public class PatientServiceImpl implements PatientService {
             return ApplicationContext.getPATIENT_REPOSITORY().findByNc(session, nationalCode).orElseThrow();
         }
     }
+
+    @Override
+    public void addPatient(String nationalCode, String password) {
+        try (Session session = SessionFactoryProvider.sessionFactory.openSession()) {
+            session.getTransaction().begin();
+            try {
+                ApplicationContext.getPATIENT_REPOSITORY().save(session, Patient.builder()
+                        .nationalCode(nationalCode)
+                        .password(password).build());
+                session.getTransaction().commit();
+            } catch (Exception e) {
+                session.getTransaction().rollback();
+                throw e;
+            }
+        }
+    }
+
+    //TODO complete this method
+    @Override
+    public PatientListDto viewPatientInformation(Patient patient) {
+        try (Session session = SessionFactoryProvider.sessionFactory.openSession()) {
+            if (ApplicationContext.getPATIENT_REPOSITORY().isExist(session, patient.getId())) {
+                ApplicationContext.getPATIENT_REPOSITORY().findById(session, patient.getId());
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public boolean isExist(Long id) {
+        try (Session session = SessionFactoryProvider.sessionFactory.openSession()) {
+            return ApplicationContext.getPATIENT_REPOSITORY().isExist(session, id);
+        }
+    }
+
+
 }

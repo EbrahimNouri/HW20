@@ -72,6 +72,13 @@ public class ClinicServiceImpl implements ClinicService {
     }
 
     @Override
+    public boolean isExist(Long id) {
+        try (Session session = SessionFactoryProvider.sessionFactory.openSession()) {
+            return ApplicationContext.getCLINIC_REPOSITORY().isExist(session, id);
+        }
+    }
+
+    @Override
     public List<Clinic> clinics() {
         try (Session session = SessionFactoryProvider.sessionFactory.openSession()) {
             return ApplicationContext.getCLINIC_REPOSITORY().findAllClinics(session).orElseThrow();

@@ -68,4 +68,11 @@ public class PrescriptionServiceImpl implements PrescriptionService {
             }
         }
     }
+
+    @Override
+    public boolean isExist(Long id) {
+        try (Session session = SessionFactoryProvider.sessionFactory.openSession()) {
+            return ApplicationContext.getPRESCRIPTION_REPOSITORY().isExist(session, id);
+        }
+    }
 }

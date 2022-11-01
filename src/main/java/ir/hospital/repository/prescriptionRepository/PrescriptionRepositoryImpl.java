@@ -30,4 +30,9 @@ public class PrescriptionRepositoryImpl implements PrescriptionRepository{
     public void saveOrUpdate(Session session, Prescription prescription) {
         PrescriptionRepository.super.saveOrUpdate(session, prescription);
     }
+
+    @Override
+    public boolean isExist(Session session, Long id) {
+        return session.find(Prescription.class, id) != null;
+    }
 }

@@ -21,6 +21,8 @@ public abstract class Person {
     @Column(unique = true)
     private String nationalCode;
 
+    private String password;
+
     private String phoneNumber;
 
     private String address;

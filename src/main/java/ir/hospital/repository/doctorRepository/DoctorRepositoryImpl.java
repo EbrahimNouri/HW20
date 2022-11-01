@@ -1,7 +1,6 @@
 package ir.hospital.repository.doctorRepository;
 
 import ir.hospital.entity.Doctor;
-import ir.hospital.entity.Patient;
 import org.hibernate.Session;
 
 import java.util.Optional;
@@ -30,6 +29,11 @@ public class DoctorRepositoryImpl implements DoctorRepository {
     @Override
     public void saveOrUpdate(Session session, Doctor doctor) {
         DoctorRepository.super.saveOrUpdate(session, doctor);
+    }
+
+    @Override
+    public boolean isExist(Session session, Long id) {
+        return session.find(Doctor.class, id) != null;
     }
 
     @Override

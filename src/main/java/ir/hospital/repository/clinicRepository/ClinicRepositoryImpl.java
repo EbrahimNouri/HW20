@@ -34,6 +34,11 @@ public class ClinicRepositoryImpl implements ClinicRepository{
     }
 
     @Override
+    public boolean isExist(Session session, Long id) {
+        return session.get(Clinic.class, id) != null;
+    }
+
+    @Override
     public Optional<List<Clinic>> findAllClinics(Session session) {
         return Optional.ofNullable(session.createQuery("from Clinic", Clinic.class).getResultList());
     }

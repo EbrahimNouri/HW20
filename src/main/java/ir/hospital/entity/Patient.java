@@ -23,9 +23,9 @@ public class Patient extends Person {
     private Set<Prescription> prescriptions;
 
     @Builder
-    public Patient(String firstname, String lastname, String nationalCode, String phoneNumber, String address, Long id
-            , Set<Clinic> clinics, Set<Queuing> queuings, Set<Prescription> prescriptions) {
-        super(firstname, lastname, nationalCode, phoneNumber, address);
+    public Patient(String firstname, String lastname, String nationalCode, String password, String phoneNumber,
+                   String address, Long id, Set<Clinic> clinics, Set<Queuing> queuings, Set<Prescription> prescriptions) {
+        super(firstname, lastname, nationalCode, password, phoneNumber, address);
         this.id = id;
         this.clinics = clinics;
         this.queuings = queuings;
