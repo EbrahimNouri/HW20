@@ -3,6 +3,7 @@ package ir.hospital.repository.prescriptionRepository;
 import ir.hospital.entity.Prescription;
 import org.hibernate.Session;
 
+import java.util.List;
 import java.util.Optional;
 
 public class PrescriptionRepositoryImpl implements PrescriptionRepository{
@@ -34,5 +35,11 @@ public class PrescriptionRepositoryImpl implements PrescriptionRepository{
     @Override
     public boolean isExist(Session session, Long id) {
         return session.find(Prescription.class, id) != null;
+    }
+
+    @Override
+    public Optional<List<Prescription>> findByPatientId(Session session, Long id) {
+        return Optional.ofNullable(session.createQuery("from Prescription p where p.patient.id = :pId"
+                , Prescription.class).setParameter("pId", id).getResultList());
     }
 }

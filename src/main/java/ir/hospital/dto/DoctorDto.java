@@ -1,16 +1,18 @@
 package ir.hospital.dto;
 
-import ir.hospital.entity.Queuing;
+import ir.hospital.entity.LocalDateType;
 import ir.hospital.entity.SpecialtyType;
 import lombok.*;
 
-import java.util.List;
+import java.time.LocalDate;
+import java.util.Map;
 
 @Builder
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 
 public class DoctorDto {
 
@@ -20,8 +22,8 @@ public class DoctorDto {
 
     private SpecialtyType specialtyType;
 
-    private List<Queuing> queuings;
+//    private List<Queuing> queuings;
 
-    private List<DateReserved> dateReserves;
+    private Map<LocalDate, LocalDateType> dateReserves;
 
 }

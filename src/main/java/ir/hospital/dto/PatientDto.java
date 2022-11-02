@@ -1,7 +1,15 @@
 package ir.hospital.dto;
 
+import lombok.*;
+
 import java.util.List;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@Builder
 public class PatientDto {
 
     private String firstname;
@@ -14,6 +22,6 @@ public class PatientDto {
 
     private String address;
 
-    private List<PatientListDto> patientListDtos;
+    private List<DiseaseRecordsDto> diseaseRecordsDtos;
 
 }

@@ -23,10 +23,10 @@ public class Clinic {
     @OneToMany(mappedBy = "clinic", fetch = FetchType.EAGER)
     private Set<Doctor> doctors;
 
-    @ManyToMany(mappedBy = "clinics")
+    @OneToMany(mappedBy = "clinic", fetch = FetchType.EAGER)
     private Set<Patient> patients;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne
     private Secretary secretary;
 
 }

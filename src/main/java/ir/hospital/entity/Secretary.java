@@ -13,7 +13,7 @@ public class Secretary extends Person{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     private Clinic clinic;
 
     @Builder

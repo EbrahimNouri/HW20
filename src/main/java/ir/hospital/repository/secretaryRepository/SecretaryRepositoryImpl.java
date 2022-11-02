@@ -1,8 +1,11 @@
 package ir.hospital.repository.secretaryRepository;
 
+import ir.hospital.entity.Doctor;
+import ir.hospital.entity.Patient;
 import ir.hospital.entity.Secretary;
 import org.hibernate.Session;
 
+import java.util.List;
 import java.util.Optional;
 
 public class SecretaryRepositoryImpl implements SecretaryRepository{
@@ -35,6 +38,18 @@ public class SecretaryRepositoryImpl implements SecretaryRepository{
     public Optional<Secretary> findByNc(Session session, String nationalCode) {
         return Optional.ofNullable(session.createQuery("from Secretary p where p.nationalCode = :ncode", Secretary.class)
                 .setParameter("nscode", nationalCode).getSingleResult());
+    }
+
+    @Override
+    public Optional<List<Patient>> showAllPatient(Session session, Secretary secretary) {
+        return Optional.ofNullable(session.createQuery("from Patient p where p.clinic.id  = :cId ", Patient.class)
+                .setParameter("cId", secretary.getClinic().getId()).getResultList());
+    }
+
+    @Override
+    public Optional<List<Doctor>> showAllDoctors(Session session, Secretary secretary) {
+        return Optional.ofNullable(session.createQuery("from Doctor p where p.clinic.id = :dId", Doctor.class)
+                .setParameter("dId", secretary.getClinic().getId()).getResultList());
     }
 
     @Override

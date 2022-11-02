@@ -13,28 +13,28 @@ public class Patient extends Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToMany
-    private Set<Clinic> clinics;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Clinic clinic;
 
     @OneToMany(mappedBy = "patient")
     private Set<Queuing> queuings;
 
-    @OneToMany(mappedBy = "patient")
+    @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER)
     private Set<Prescription> prescriptions;
 
     @Builder
-    public Patient(String firstname, String lastname, String nationalCode, String password, String phoneNumber,
-                   String address, Long id, Set<Clinic> clinics, Set<Queuing> queuings, Set<Prescription> prescriptions) {
+    public Patient(String firstname, String lastname, String nationalCode, String password, String phoneNumber
+            , String address, Long id, Clinic clinic, Set<Queuing> queuings, Set<Prescription> prescriptions) {
         super(firstname, lastname, nationalCode, password, phoneNumber, address);
         this.id = id;
-        this.clinics = clinics;
+        this.clinic = clinic;
         this.queuings = queuings;
         this.prescriptions = prescriptions;
     }
 
-    public Patient(Long id, Set<Clinic> clinics, Set<Queuing> queuings, Set<Prescription> prescriptions) {
+    public Patient(Long id, Clinic clinic, Set<Queuing> queuings, Set<Prescription> prescriptions) {
         this.id = id;
-        this.clinics = clinics;
+        this.clinic = clinic;
         this.queuings = queuings;
         this.prescriptions = prescriptions;
     }

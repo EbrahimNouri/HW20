@@ -4,6 +4,8 @@ import ir.hospital.entity.Queuing;
 import ir.hospital.entity.QueuingCheck;
 import org.hibernate.Session;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 public class QueuingRepositoryImpl implements QueuingRepository {
@@ -42,6 +44,12 @@ public class QueuingRepositoryImpl implements QueuingRepository {
                                 && queuingOfList.getLocalDate().getDayOfYear() == queuing.getLocalDate().getDayOfYear()
                                 && queuingOfList.getLocalDateType() == queuing.getLocalDateType()
                                 && queuingOfList.getQueuingCheck() == QueuingCheck.RESERVED).toList().isEmpty();
+    }
+
+    @Override
+    public List<Queuing> getAllAfterNow(Session session) {
+        return session.createQuery("from Queuing ", Queuing.class).stream()
+                .filter((q) -> q.getLocalDate().isAfter(LocalDate.now())).toList();
     }
 
     @Override

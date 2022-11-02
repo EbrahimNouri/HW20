@@ -11,4 +11,5 @@ public interface ClinicRepository  extends BaseRepository<Clinic> {
 
     Optional<List<Clinic>> findAllClinics(Session session);
 
+
 }

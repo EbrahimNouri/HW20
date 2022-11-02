@@ -1,8 +1,16 @@
 package ir.hospital.dto;
 
+import lombok.*;
+
 import java.time.LocalDate;
 
-public class PatientListDto {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@Builder
+public class DiseaseRecordsDto {
 
     private String ClinicName;
 
