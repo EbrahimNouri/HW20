@@ -8,6 +8,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 public class SessionFactoryProvider {
 
+
     public static SessionFactory sessionFactory;
 
     static {

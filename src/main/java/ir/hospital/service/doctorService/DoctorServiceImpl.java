@@ -4,10 +4,15 @@ import ir.hospital.entity.Doctor;
 import ir.hospital.repository.doctorRepository.DoctorRepositoryImpl;
 import ir.hospital.utility.ApplicationContext;
 import ir.hospital.utility.SessionFactoryProvider;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
 public class DoctorServiceImpl implements DoctorService {
-private final DoctorRepositoryImpl DOCTOR_REPOSITORY = ApplicationContext.getDOCTOR_REPOSITORY();
+
+    private static final Logger LOGGER = LogManager.getLogger(DoctorServiceImpl.class);
+
+    private final DoctorRepositoryImpl DOCTOR_REPOSITORY = ApplicationContext.getDOCTOR_REPOSITORY();
 
     @Override
     public void save(Doctor doctor) {
@@ -16,10 +21,10 @@ private final DoctorRepositoryImpl DOCTOR_REPOSITORY = ApplicationContext.getDOC
             try {
                 DOCTOR_REPOSITORY.save(session, doctor);
                 session.getTransaction().commit();
+                LOGGER.debug("saved {}", doctor);
             } catch (Exception e) {
                 session.getTransaction().rollback();
-                throw e;
-            }
+                LOGGER.error("can't save {}", doctor, e);}
         }
     }
 
@@ -30,9 +35,10 @@ private final DoctorRepositoryImpl DOCTOR_REPOSITORY = ApplicationContext.getDOC
             try {
                 DOCTOR_REPOSITORY.saveOrUpdate(session, doctor);
                 session.getTransaction().commit();
+                LOGGER.debug("saved or updated {}", doctor);
             } catch (Exception e) {
                 session.getTransaction().rollback();
-                throw e;
+                LOGGER.error("can't save or update {}", doctor, e);
             }
         }
     }
@@ -44,9 +50,10 @@ private final DoctorRepositoryImpl DOCTOR_REPOSITORY = ApplicationContext.getDOC
             try {
                 DOCTOR_REPOSITORY.update(session, doctor);
                 session.getTransaction().commit();
+                LOGGER.debug("updated {}", doctor);
             } catch (Exception e) {
                 session.getTransaction().rollback();
-                throw e;
+                LOGGER.error("cant update {}", doctor, e);
             }
         }
     }
@@ -54,8 +61,13 @@ private final DoctorRepositoryImpl DOCTOR_REPOSITORY = ApplicationContext.getDOC
     @Override
     public Doctor findById(Long id) {
         try (Session session = SessionFactoryProvider.sessionFactory.openSession()) {
-            return DOCTOR_REPOSITORY.findById(session, id).orElseThrow();
-
+            try {
+                LOGGER.debug("find by id {}", id);
+                return DOCTOR_REPOSITORY.findById(session, id).orElseThrow();
+            }catch (Exception e){
+                LOGGER.error("cant find by id {}", id, e);
+                return null;
+            }
         }
     }
 
@@ -66,9 +78,10 @@ private final DoctorRepositoryImpl DOCTOR_REPOSITORY = ApplicationContext.getDOC
             try {
                 DOCTOR_REPOSITORY.delete(session, doctor);
                 session.getTransaction().commit();
+                LOGGER.debug("deleted {}", doctor);
             } catch (Exception e) {
                 session.getTransaction().rollback();
-                throw e;
+                LOGGER.error("cant delete {}", doctor, e);
             }
         }
     }
@@ -76,13 +89,26 @@ private final DoctorRepositoryImpl DOCTOR_REPOSITORY = ApplicationContext.getDOC
     @Override
     public Doctor findByNc(String nationalCode) {
         try (Session session = SessionFactoryProvider.sessionFactory.openSession()) {
-            return DOCTOR_REPOSITORY.findByNc(session, nationalCode).orElseThrow();
+            try {
+                LOGGER.debug("found by national code {}", nationalCode);
+                return DOCTOR_REPOSITORY.findByNc(session, nationalCode).orElseThrow();
+            }catch (Exception e){
+                LOGGER.error("cant find by national code {}", nationalCode, e);
+                return null;
+            }
         }
     }
-@Override
+
+    @Override
     public boolean isExist(Long id) {
         try (Session session = SessionFactoryProvider.sessionFactory.openSession()) {
-            return DOCTOR_REPOSITORY.isExist(session, id);
+            try {
+                LOGGER.debug("Doctor updated {}", id);
+                return DOCTOR_REPOSITORY.isExist(session, id);
+            } catch (Exception e) {
+                LOGGER.error("cant check is exist {}", id, e);
+                return false;
+            }
         }
     }
 }

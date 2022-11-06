@@ -41,4 +41,9 @@ public class ClinicTest {
                         .equals(doctor.getEmployeeNumber())));
     }
 
+    @Test
+    void findById(){
+        Assertions.assertNotNull(clinicService.findById(12L).getId());
+    }
+
 }

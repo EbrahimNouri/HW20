@@ -4,19 +4,23 @@ import ir.hospital.entity.Queuing;
 import ir.hospital.repository.queuingRepository.QueuingRepositoryImpl;
 import ir.hospital.utility.ApplicationContext;
 import ir.hospital.utility.SessionFactoryProvider;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
 public class QueuingServiceImpl implements QueuingService {
 
+    private static final Logger LOGGER = LogManager.getLogger(QueuingService.class);
+
     QueuingRepositoryImpl QUEUING_REPOSITORY = ApplicationContext.getQUEUING_REPOSITORY();
+
     @Override
     public void save(Queuing queuing) {
         if (checkQueuing(queuing)) {
 
             saveExtracted(queuing);
-        } else throw new RuntimeException("this time is not available");
+        } LOGGER.warn("{} time is not available ", queuing);
     }
-
 
 
     @Override
@@ -30,7 +34,6 @@ public class QueuingServiceImpl implements QueuingService {
     }
 
 
-
     @Override
     public void update(Queuing queuing) {
         updateExtracted(queuing);
@@ -39,7 +42,13 @@ public class QueuingServiceImpl implements QueuingService {
     @Override
     public Queuing findById(Long id) {
         try (Session session = SessionFactoryProvider.sessionFactory.openSession()) {
-            return QUEUING_REPOSITORY.findById(session, id).orElseThrow();
+            try {
+                LOGGER.debug("find by id {}", id);
+                return QUEUING_REPOSITORY.findById(session, id).orElseThrow();
+            } catch (Exception e) {
+                LOGGER.error("error find by id {} ", id, e);
+                return null;
+            }
         }
     }
 
@@ -50,9 +59,10 @@ public class QueuingServiceImpl implements QueuingService {
             try {
                 QUEUING_REPOSITORY.delete(session, queuing);
                 session.getTransaction().commit();
+                LOGGER.debug("delete {} ", queuing);
             } catch (Exception e) {
                 session.getTransaction().rollback();
-                throw e;
+                LOGGER.error("error delete {} ", queuing, e);
             }
         }
     }
@@ -60,7 +70,13 @@ public class QueuingServiceImpl implements QueuingService {
     @Override
     public boolean checkQueuing(Queuing queuing) {
         try (Session session = SessionFactoryProvider.sessionFactory.openSession()) {
-            return QUEUING_REPOSITORY.checkQueuing(session, queuing);
+            try {
+                LOGGER.debug("check queuing {} ", queuing);
+                return QUEUING_REPOSITORY.checkQueuing(session, queuing);
+            } catch (Exception e) {
+                LOGGER.error("error check queuing {} ", queuing, e);
+                return false;
+            }
         }
     }
 
@@ -70,9 +86,10 @@ public class QueuingServiceImpl implements QueuingService {
             try {
                 QUEUING_REPOSITORY.update(session, queuing);
                 session.getTransaction().commit();
+                LOGGER.debug("update {} ", queuing);
             } catch (Exception e) {
                 session.getTransaction().rollback();
-                throw e;
+                LOGGER.error("error update {} ", queuing, e);
             }
         }
     }
@@ -83,9 +100,10 @@ public class QueuingServiceImpl implements QueuingService {
             try {
                 QUEUING_REPOSITORY.save(session, queuing);
                 session.getTransaction().commit();
+                LOGGER.debug("save {} ", queuing);
             } catch (Exception e) {
                 session.getTransaction().rollback();
-                throw e;
+                LOGGER.error("error save {} ", queuing, e);
             }
         }
     }
@@ -93,7 +111,13 @@ public class QueuingServiceImpl implements QueuingService {
     @Override
     public boolean isExist(Long id) {
         try (Session session = SessionFactoryProvider.sessionFactory.openSession()) {
+            try {
+                LOGGER.debug("is exist {} ", id);
             return QUEUING_REPOSITORY.isExist(session, id);
+            }catch (Exception e){
+                LOGGER.error("error is exist {} ", id, e);
+                return false;
+            }
         }
     }
 }
